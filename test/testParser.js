@@ -198,9 +198,8 @@ describe("mixed values with both quotes and without",function(){
 
 const errorChecker=function(key,pos,typeOfError) {
     return function(err) {
-      if(err instanceof typeOfError && err.key==key && err.position==pos)
-        return true;
-      return false;
+      assert.equal(err.key,key)
+      assert.equal(err.position,pos)
     }
 }
 
@@ -213,7 +212,7 @@ describe("error handling",function(){
     let err = assert.throws(
       () => {
         kvParser.parse("key=");
-      },
+      },MissingValueError
     )
     let validator = errorChecker("key",3,MissingValueError);
     validator(err)
@@ -223,7 +222,7 @@ describe("error handling",function(){
     let err = assert.throws(
       () => {
         kvParser.parse("key=\"value")
-      },
+      },MissingEndQuoteError
     )
     let validator = errorChecker("key",9,MissingEndQuoteError);
     validator(err);
@@ -233,7 +232,7 @@ describe("error handling",function(){
     let err = assert.throws(
       () => {
         var p=kvParser.parse("=value");
-      },
+      },MissingKeyError
     )
     let validator = errorChecker(undefined,0,MissingKeyError);
     validator(err);
@@ -243,7 +242,7 @@ describe("error handling",function(){
     let err = assert.throws(
       () => {
         var p=kvParser.parse("'foo'=value");
-      },
+      },MissingKeyError
     )
     let validator = errorChecker(undefined,0,MissingKeyError);
     validator(err);
@@ -253,7 +252,7 @@ describe("error handling",function(){
     let err = assert.throws(
       () => {
         var p=kvParser.parse("key value");
-      },
+      },MissingAssignmentOperatorError
     )
     let validator = errorChecker(undefined,4,MissingAssignmentOperatorError);
     validator(err);
@@ -263,7 +262,7 @@ describe("error handling",function(){
     let err = assert.throws(
       () => {
         var p=kvParser.parse("key");
-      },
+      },IncompleteKeyValuePairError
     )
     let validator = errorChecker(undefined,2,IncompleteKeyValuePairError);
     validator(err);

@@ -7,9 +7,8 @@ const InvalidKeyError=require(errors('invalidKeyError.js'));
 
 var invalidKeyErrorChecker=function(key,pos) {
   return function(err) {
-    if(err instanceof InvalidKeyError && err.invalidKey==key && err.position==pos)
-      return true;
-    return false;
+    assert.equal(err.invalidKey,key)
+    assert.equal(err.position,pos)
   }
 }
 
