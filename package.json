@@ -4,9 +4,9 @@
   "description": "A parser that parses key value pairs in the form of name=john age=23 address=\"1234 Somewhere\"",
   "main": "src/index.js",
   "dependencies": {
-    "chai": "^4.1.2"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "mocha": "^3.4.2"
   },
   "scripts": {
